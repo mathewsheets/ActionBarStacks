@@ -1,0 +1,64 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="android:colorPrimary">@color/granite</item>
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="android:colorPrimaryDark">@color/granite_dark</item>
+        <!-- colorAccent is used as the default value for colorControlActivated which is used to tint widgets
+        <item name="android:colorAccent">@color/granite</item> -->
+
+        <!-- You can also set colorControlNormal, colorControlActivated colorControlHighlight -->
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/ActionBar</item>
+
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/granite</item>
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/granite_dark</item>
+        <!-- colorAccent is used as the default value for colorControlActivated which is used to tint widgets
+        <item name="colorAccent">@color/granite</item> -->
+    </style>
+
+    <style name="ActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/granite</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
+        <item name="android:subtitleTextStyle">@style/ActionBarSubtitleText</item>
+
+        <!-- Support library compatibility -->
+        <item name="background">@color/granite</item>
+        <item name="titleTextStyle">@style/ActionBarTitleText</item>
+        <item name="subtitleTextStyle">@style/ActionBarSubtitleText</item>
+    </style>
+
+    <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ActionBarSubtitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
+    <style name="text">
+        <item name="android:padding">10dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="text_white" parent="text">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="text_black" parent="text">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="text_green" parent="text">
+        <item name="android:textColor">@color/green</item>
+    </style>
+
+</resources>

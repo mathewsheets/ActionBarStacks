@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="gray">#eeeeee</color>
+
+    <color name="granite">#455a64</color>
+    <color name="granite_dark">#37474f</color>
+
+    <color name="green">#689f38</color>
+    <color name="green_dark">#558b2f</color>
+
+    <color name="blue">#039be5</color>
+    <color name="blue_dark">#0277bd</color>
+
+    <color name="purple">#536dfe</color>
+    <color name="purple_dark">#304ffe</color>
+
+    <color name="red">#ed3b3b</color>
+    <color name="red_dark">#d23f31</color>
+
+    <color name="orange">#ef6c00</color>
+    <color name="orange_dark">#e65100</color>
+
+</resources>
