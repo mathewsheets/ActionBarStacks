@@ -45,8 +45,8 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
     private ActionBarDrawerToggle drawerToggle;    
     private String drawerTitle;
     private boolean homeAsUpShowing;
-    private FragmentStack currentFragmentStack;
-    private Map<String, FragmentStack> containers = new HashMap<String, FragmentStack>();
+    private DrawerItemFragmentStack currentDrawerItemFragmentStack;
+    private Map<String, DrawerItemFragmentStack> containers = new HashMap<String, DrawerItemFragmentStack>();
 
     private OnDrawerOpenListener onDrawerOpenListener;
     private OnDrawerClosedListener onDrawerClosedListener;
@@ -137,11 +137,11 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
         	ArrayList<String> titles = savedInstanceState.getStringArrayList("titles");
         	for(String title : titles) {
 
-        		FragmentStack fragmentStack = (FragmentStack) f.getFragment(savedInstanceState, title);
+        		DrawerItemFragmentStack drawerItemFragmentStack = (DrawerItemFragmentStack) f.getFragment(savedInstanceState, title);
 
                 if (enableDebugLogging) Log.d(TAG, "restoring frag container: " + title);
 
-                containers.put(title, fragmentStack);
+                containers.put(title, drawerItemFragmentStack);
         	}
         }
     }
@@ -172,7 +172,7 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
         ArrayList<String> titles = new ArrayList<String>();
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
-	    for (Map.Entry<String, FragmentStack> entry : containers.entrySet()) {
+	    for (Map.Entry<String, DrawerItemFragmentStack> entry : containers.entrySet()) {
 
 	    	titles.add(entry.getKey());
 
@@ -242,7 +242,7 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
 
     	String title = getDrawerItemTitle(position);
 
-    	if(currentFragmentStack != null && title.equals(currentFragmentStack.getInitialFragmentTitle())) {
+    	if(currentDrawerItemFragmentStack != null && title.equals(currentDrawerItemFragmentStack.getInitialFragmentTitle())) {
 
     		return;
     	}
@@ -250,13 +250,13 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction tx = fragmentManager.beginTransaction();
 
-    	FragmentStack fragment = null;
+    	DrawerItemFragmentStack fragment = null;
 
     	if(containers.get(title) == null) {
 
             // new fragment stack,  it needs to be added to the stack
 
-            fragment = FragmentStack.newInstance(title, onNewDrawerItem(position));
+            fragment = DrawerItemFragmentStack.newInstance(title, onNewDrawerItem(position));
 
             containers.put(title, fragment);
 
@@ -268,8 +268,8 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
 
     		fragment = containers.get(title);
 
-			setCurrentFragmentStack(fragment);
-			currentFragmentStack.setInitialFragmentTitle(title);
+			setCurrentDrawerItemFragmentStack(fragment);
+			currentDrawerItemFragmentStack.setInitialFragmentTitle(title);
 
             // if the fragment container's stack is > 1, show the up arrow indicating that the user
             // can go up in navigation
@@ -302,9 +302,9 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
         drawerLayout.closeDrawer(drawerView);
     }
 
-    private void setCurrentFragmentStack(FragmentStack fragment) {
+    private void setCurrentDrawerItemFragmentStack(DrawerItemFragmentStack fragment) {
 
-    	currentFragmentStack = fragment;
+    	currentDrawerItemFragmentStack = fragment;
     	
     	onSetDrawerItem(fragment.getTag());
     }
@@ -322,9 +322,9 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
 			return;
 		}
 
-		if(currentFragmentStack.getBackStackEntryCount() > 1) {
+		if(currentDrawerItemFragmentStack.getBackStackEntryCount() > 1) {
 
-			currentFragmentStack.popBackStack();
+			currentDrawerItemFragmentStack.popBackStack();
 			return;
 		}
 
@@ -360,9 +360,9 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
 			return;
 		}
 
-		if(currentFragmentStack != null) {
+		if(currentDrawerItemFragmentStack != null) {
 
-			currentFragmentStack.popBackStack();
+			currentDrawerItemFragmentStack.popBackStack();
 
 		} else {
 
@@ -372,15 +372,15 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
 
 	public void addFragmentToCurrentStack(String title, Fragment fragment) {
 
-		currentFragmentStack.addFragment(title, fragment);
+		currentDrawerItemFragmentStack.addFragment(title, fragment);
 	}
 
-	public Fragment getCurrentFragmentStack() {
+	public Fragment getCurrentDrawerItemFragmentStack() {
 
-		return currentFragmentStack;
+		return currentDrawerItemFragmentStack;
 	}
 
-	public static class FragmentStack extends Fragment {
+	public static class DrawerItemFragmentStack extends Fragment {
 
 		private static String ARG_INITIAL_FRAGMENT_TITLE = "initialFragmentTitle";
 
@@ -389,17 +389,17 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
 
 		private OnBackStackChangedListener backStackChangedListener;
 
-		private static FragmentStack newInstance(String initialFragmentTitle, Fragment initialFragment) {
+		private static DrawerItemFragmentStack newInstance(String initialFragmentTitle, Fragment initialFragment) {
 
-			FragmentStack fragmentStack = new FragmentStack();
+			DrawerItemFragmentStack drawerItemFragmentStack = new DrawerItemFragmentStack();
 
-			fragmentStack.initialFragment = initialFragment;
+			drawerItemFragmentStack.initialFragment = initialFragment;
 
 	        Bundle args = new Bundle();
 	        args.putString(ARG_INITIAL_FRAGMENT_TITLE, initialFragmentTitle);
-	        fragmentStack.setArguments(args);
+	        drawerItemFragmentStack.setArguments(args);
 
-			return fragmentStack;
+			return drawerItemFragmentStack;
 		}
 
 		private void addFragment(String title, Fragment fragment) {
@@ -465,7 +465,7 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
 			initialFragmentTitle = getArguments().getString(ARG_INITIAL_FRAGMENT_TITLE);
 
 			ActionBarDrawerStacksActivity activity = (ActionBarDrawerStacksActivity) getActivity();
-			activity.setCurrentFragmentStack(this);
+			activity.setCurrentDrawerItemFragmentStack(this);
 
 			setTitle();
 

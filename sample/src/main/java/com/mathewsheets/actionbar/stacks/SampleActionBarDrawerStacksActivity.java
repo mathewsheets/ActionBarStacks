@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
@@ -20,7 +22,7 @@ import com.mathewsheets.actionbar.stackslib.ActionBarDrawerStacksActivity;
 public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksActivity {
 
 	private String[] itemTitles;
-	private ArrayAdapter<DrawerItem> adapter;
+	private DrawerAdapter adapter;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,7 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 			@Override
 			public void onClick(View arg0) {
 
-				Intent intent = new Intent(SampleActionBarDrawerStacksActivity.this, SampleActionBarFragmentStacksActivity.class);
+				Intent intent = new Intent(SampleActionBarDrawerStacksActivity.this, SampleActionBarFragmentStackActivity.class);
 				intent.putExtra("from", fixedTopTitle);
                 intent.putExtra("color", R.color.blue);
                 intent.putExtra("color_dark", R.color.blue_dark);
@@ -94,7 +96,7 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 			@Override
 			public void onClick(View arg0) {
 
-				Intent intent = new Intent(SampleActionBarDrawerStacksActivity.this, SampleActionBarFragmentStacksActivity.class);
+				Intent intent = new Intent(SampleActionBarDrawerStacksActivity.this, SampleActionBarFragmentStackActivity.class);
 				intent.putExtra("from", fixedBottomTitle);
                 intent.putExtra("color", R.color.purple);
                 intent.putExtra("color_dark", R.color.purple_dark);
@@ -125,7 +127,7 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 			@Override
 			public void onClick(View arg0) {
 
-				Intent intent = new Intent(SampleActionBarDrawerStacksActivity.this, SampleActionBarFragmentStacksActivity.class);
+				Intent intent = new Intent(SampleActionBarDrawerStacksActivity.this, SampleActionBarFragmentStackActivity.class);
 				intent.putExtra("from", headerTitle);
                 intent.putExtra("color", R.color.red);
                 intent.putExtra("color_dark", R.color.red_dark);
@@ -139,7 +141,7 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 			@Override
 			public void onClick(View arg0) {
 
-				Intent intent = new Intent(SampleActionBarDrawerStacksActivity.this, SampleActionBarFragmentStacksActivity.class);
+				Intent intent = new Intent(SampleActionBarDrawerStacksActivity.this, SampleActionBarFragmentStackActivity.class);
 				intent.putExtra("from", footerTitle);
                 intent.putExtra("color", R.color.orange);
                 intent.putExtra("color_dark", R.color.orange_dark);
@@ -211,23 +213,7 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 	@Override
 	protected Fragment onNewDrawerItem(int position) {
 
-		// unselect all first
-
-		int count = adapter.getCount();
-		for(int i=0;i<count;i++) {
-			adapter.getItem(i).setSelected(true);
-		}
-
-		// select the single one
-
-		DrawerItem drawerItem = adapter.getItem(position);
-		drawerItem.setSelected(true);
-
-		// tell adapter to reiterate
-
-		adapter.notifyDataSetChanged();
-
-		SampleListFragment sampleFragment = new SampleListFragment();
+        SampleMasterListFragment sampleFragment = new SampleMasterListFragment();
 
 		Bundle args = new Bundle();
 		args.putString(SampleListFragment.ARG_TITLE, getDrawerItemTitle(position));
@@ -239,21 +225,63 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 	}
 
 	@Override
-    public void onSetDrawerItem(String itemTitle) {
+    public void onSetDrawerItem(String title) {
 
-		int count = adapter.getCount();
-		for(int position=0;position<count;position++) {
+        adapter.setDrawItemSelected(title);
 
-			DrawerItem drawerItem = adapter.getItem(position);
+        clearDetailFragment();
+    }
 
-			if(itemTitle.equals(drawerItem.title)) {				
-				drawerItem.setSelected(true);
-			} else {				
-				drawerItem.setSelected(false);
-			}
-		}
+    @Override
+    public void onBackPressed() {
 
-		adapter.notifyDataSetChanged();
+        super.onBackPressed();
+
+        clearDetailFragment();
+    }
+
+    @Override
+    protected void moveUp() {
+
+        super.moveUp();
+
+        clearDetailFragment();
+    }
+
+    private void clearDetailFragment() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container_frame_detail);
+        if (fragment != null) {
+            FragmentTransaction tx = fragmentManager.beginTransaction();
+            tx.remove(fragment);
+            tx.commit();
+        }
+    }
+
+    public void addFragment(String title, Fragment fragment) {
+
+        if (hasDetailFragment()) {
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction tx = fragmentManager.beginTransaction();
+            tx.replace(R.id.fragment_container_frame_detail, fragment);
+            tx.commit();
+
+        } else {
+
+            addFragmentToCurrentStack(title, fragment);
+        }
+    }
+
+    public boolean hasDetailFragment() {
+
+        return getDetailView() != null ? true : false;
+    }
+
+    protected View getDetailView() {
+
+        return findViewById(R.id.fragment_container_frame_detail);
     }
 
 	private static class DrawerAdapter extends ArrayAdapter<DrawerItem> {
@@ -262,6 +290,23 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 
 			super(context, 0);
 		}
+
+        public void setDrawItemSelected(String title) {
+
+            int count = getCount();
+            for(int position=0;position<count;position++) {
+
+                DrawerItem drawerItem = getItem(position);
+
+                if(title.equals(drawerItem.title)) {
+                    drawerItem.setSelected(true);
+                } else {
+                    drawerItem.setSelected(false);
+                }
+            }
+
+            notifyDataSetChanged();
+        }
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -303,5 +348,6 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 		public void setSelected(boolean selected) {
 			this.selected = selected;
 		}
-	}	
+	}
+
 }

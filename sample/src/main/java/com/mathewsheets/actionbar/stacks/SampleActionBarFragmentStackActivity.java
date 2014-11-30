@@ -5,9 +5,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.mathewsheets.actionbar.stackslib.ActionBarFragmentStacksActivity;
+import com.mathewsheets.actionbar.stackslib.ActionBarFragmentStackActivity;
 
-public class SampleActionBarFragmentStacksActivity extends ActionBarFragmentStacksActivity {
+public class SampleActionBarFragmentStackActivity extends ActionBarFragmentStackActivity {
 
     @SuppressLint("NewApi")
 	@Override
@@ -57,7 +57,7 @@ public class SampleActionBarFragmentStacksActivity extends ActionBarFragmentStac
     @Override
     protected int getFragmentContainerLayoutRes() {
 
-    	return R.layout.fragment_container;
+    	return R.layout.fragment_container_full;
     }
     
     @Override

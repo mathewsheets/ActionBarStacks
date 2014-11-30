@@ -21,4 +21,6 @@
     <color name="orange">#ef6c00</color>
     <color name="orange_dark">#e65100</color>
 
+    <color name="transparent_black">#ab000000</color>
+
 </resources>

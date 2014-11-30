@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="match_parent">-2px</dimen>
+    <dimen name="fragment_width">@dimen/match_parent</dimen>
+    <dimen name="fragment_margin_top">0dp</dimen>
+    <dimen name="fragment_margin_bottom">0dp</dimen>
+
+</resources>

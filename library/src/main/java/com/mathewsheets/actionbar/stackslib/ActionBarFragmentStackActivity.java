@@ -9,9 +9,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
-public abstract class ActionBarFragmentStacksActivity extends ActionBarActivity {
+public abstract class ActionBarFragmentStackActivity extends ActionBarActivity {
 
-	private static final String TAG = ActionBarFragmentStacksActivity.class.getSimpleName();
+	private static final String TAG = ActionBarFragmentStackActivity.class.getSimpleName();
 	
 	protected abstract int getFragmentContainerLayoutRes();
 	protected abstract int getFragmentContainerFrameRes();
@@ -70,8 +70,6 @@ public abstract class ActionBarFragmentStacksActivity extends ActionBarActivity 
 			}
 		};
 
-        getSupportFragmentManager().addOnBackStackChangedListener(backStackListener);
-
 		if (savedInstanceState != null) {
 
             // reset the title for the action bar to the current title in the stack
@@ -96,6 +94,11 @@ public abstract class ActionBarFragmentStacksActivity extends ActionBarActivity 
 		super.onResume();
 
 //        FragmentManager.enableDebugLogging(enableDebugLogging);
+
+        // important to keep adding the backstack change listener on the onresume because
+        // we don't want to handle change if child class adds a fragment in the oncreate
+
+        getSupportFragmentManager().addOnBackStackChangedListener(backStackListener);
 
         if (!keepHomeAsUp) {
             if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
@@ -134,8 +137,8 @@ public abstract class ActionBarFragmentStacksActivity extends ActionBarActivity 
 	@Override
 	public void setTitle(CharSequence title) {
 
-		this.title = title.toString();
-		getSupportActionBar().setTitle(this.title);
+        this.title = title.toString();
+        getSupportActionBar().setTitle(this.title);
 	}
 
     /*
@@ -152,6 +155,8 @@ public abstract class ActionBarFragmentStacksActivity extends ActionBarActivity 
 		tx.addToBackStack(title);
 
 		tx.commit();
+
+        setTitle(title); // make we set the title
 	}
 
 	private void setHomeAsUp(boolean show) {

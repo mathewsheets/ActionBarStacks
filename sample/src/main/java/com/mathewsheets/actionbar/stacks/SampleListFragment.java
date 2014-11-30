@@ -16,11 +16,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mathewsheets.actionbar.stackslib.ActionBarDrawerStacksActivity;
-import com.mathewsheets.actionbar.stackslib.ActionBarFragmentStacksActivity;
 
 public class SampleListFragment extends ListFragment {
 
-	public static final String ARG_TITLE = "title";
+    public static final String ARG_TITLE = "title";
     public static final String ARG_COLOR = "color";
 
 	private SampleAdapter adapter;
@@ -42,7 +41,7 @@ public class SampleListFragment extends ListFragment {
         int colorRes = args.getInt(ARG_COLOR);
 
 		adapter = new SampleAdapter(getActivity());
-		for (int i = 1; i <= 10; i++) {
+		for (int i = 1; i <= 100; i++) {
 			adapter.add(new SampleItem(title + ": " + i, colorRes));
 		}
 		setListAdapter(adapter);
@@ -77,18 +76,35 @@ public class SampleListFragment extends ListFragment {
 
 		SampleItem item = (SampleItem) adapter.getItem(position);
 
-		SampleListFragment fragment = new SampleListFragment();
-
-        Bundle args = new Bundle();
-        args.putString(SampleListFragment.ARG_TITLE, item.title);
-        args.putInt(SampleListFragment.ARG_COLOR, item.colorRes);
-
-        fragment.setArguments(args);
-
         if(getActivity() instanceof ActionBarDrawerStacksActivity) {
-        	((ActionBarDrawerStacksActivity) getActivity()).addFragmentToCurrentStack(item.title, fragment);
+
+            SampleActionBarDrawerStacksActivity activity = (SampleActionBarDrawerStacksActivity) getActivity();
+
+            SampleListFragment fragment = null;
+            if (activity.hasDetailFragment()) {
+                fragment = new SampleDetailListFragment();
+            } else {
+                fragment = new SampleListFragment();
+            }
+
+            Bundle args = new Bundle();
+            args.putString(SampleListFragment.ARG_TITLE, item.title);
+            args.putInt(SampleListFragment.ARG_COLOR, item.colorRes);
+
+            fragment.setArguments(args);
+
+            activity.addFragment(item.title, fragment);
         } else {
-        	((ActionBarFragmentStacksActivity) getActivity()).addFragment(item.title, fragment);
+
+            SampleListFragment fragment = new SampleListFragment();
+
+            Bundle args = new Bundle();
+            args.putString(SampleListFragment.ARG_TITLE, item.title);
+            args.putInt(SampleListFragment.ARG_COLOR, item.colorRes);
+
+            fragment.setArguments(args);
+
+        	((SampleActionBarFragmentStackActivity) getActivity()).addFragment(item.title, fragment);
         }		
 	}
 	
