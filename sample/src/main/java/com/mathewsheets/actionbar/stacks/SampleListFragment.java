@@ -80,31 +80,29 @@ public class SampleListFragment extends ListFragment {
 
             SampleActionBarDrawerStacksActivity activity = (SampleActionBarDrawerStacksActivity) getActivity();
 
-            SampleListFragment fragment = null;
-            if (activity.hasDetailFragment()) {
-                fragment = new SampleDetailListFragment();
-            } else {
-                fragment = new SampleListFragment();
-            }
+            SampleDetailListFragment f = new SampleDetailListFragment();
 
             Bundle args = new Bundle();
             args.putString(SampleListFragment.ARG_TITLE, item.title);
             args.putInt(SampleListFragment.ARG_COLOR, item.colorRes);
 
-            fragment.setArguments(args);
+            f.setArguments(args);
 
-            activity.addFragment(item.title, fragment);
+            activity.addFragment(item.title, f);
+
         } else {
 
-            SampleListFragment fragment = new SampleListFragment();
+            SampleActionBarFragmentStackActivity activity = (SampleActionBarFragmentStackActivity) getActivity();
+
+            SampleListFragment f = new SampleListFragment();
 
             Bundle args = new Bundle();
             args.putString(SampleListFragment.ARG_TITLE, item.title);
             args.putInt(SampleListFragment.ARG_COLOR, item.colorRes);
 
-            fragment.setArguments(args);
+            f.setArguments(args);
 
-        	((SampleActionBarFragmentStackActivity) getActivity()).addFragment(item.title, fragment);
+            activity.addFragment(item.title, f);
         }		
 	}
 	

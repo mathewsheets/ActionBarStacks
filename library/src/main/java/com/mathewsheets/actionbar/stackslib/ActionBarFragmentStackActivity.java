@@ -95,7 +95,7 @@ public abstract class ActionBarFragmentStackActivity extends ActionBarActivity {
 
 //        FragmentManager.enableDebugLogging(enableDebugLogging);
 
-        // important to keep adding the backstack change listener on the onresume because
+        // important to keep adding the backstack change listener in the onresume because
         // we don't want to handle change if child class adds a fragment in the oncreate
 
         getSupportFragmentManager().addOnBackStackChangedListener(backStackListener);
@@ -156,7 +156,7 @@ public abstract class ActionBarFragmentStackActivity extends ActionBarActivity {
 
 		tx.commit();
 
-        setTitle(title); // make we set the title
+        setTitle(title); // make sure we set the title
 	}
 
 	private void setHomeAsUp(boolean show) {

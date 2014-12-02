@@ -370,12 +370,12 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
 		}
 	}
 
-	public void addFragmentToCurrentStack(String title, Fragment fragment) {
+	public void addToCurrentDrawerItemStack(String title, Fragment fragment) {
 
 		currentDrawerItemFragmentStack.addFragment(title, fragment);
 	}
 
-	public Fragment getCurrentDrawerItemFragmentStack() {
+	public Fragment getCurrentDrawerItemStack() {
 
 		return currentDrawerItemFragmentStack;
 	}
@@ -391,15 +391,15 @@ public abstract class ActionBarDrawerStacksActivity extends ActionBarActivity {
 
 		private static DrawerItemFragmentStack newInstance(String initialFragmentTitle, Fragment initialFragment) {
 
-			DrawerItemFragmentStack drawerItemFragmentStack = new DrawerItemFragmentStack();
+			DrawerItemFragmentStack f = new DrawerItemFragmentStack();
 
-			drawerItemFragmentStack.initialFragment = initialFragment;
+			f.initialFragment = initialFragment;
 
 	        Bundle args = new Bundle();
 	        args.putString(ARG_INITIAL_FRAGMENT_TITLE, initialFragmentTitle);
-	        drawerItemFragmentStack.setArguments(args);
+	        f.setArguments(args);
 
-			return drawerItemFragmentStack;
+			return f;
 		}
 
 		private void addFragment(String title, Fragment fragment) {

@@ -270,7 +270,7 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 
         } else {
 
-            addFragmentToCurrentStack(title, fragment);
+            addToCurrentDrawerItemStack(title, fragment);
         }
     }
 
