@@ -229,7 +229,7 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 
         adapter.setDrawItemSelected(title);
 
-        clearDetailFragment();
+        if (hasDetailFragment()) clearDetailFragment();
     }
 
     @Override
@@ -237,7 +237,7 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 
         super.onBackPressed();
 
-        clearDetailFragment();
+        if (hasDetailFragment()) clearDetailFragment();
     }
 
     @Override
@@ -245,7 +245,7 @@ public class SampleActionBarDrawerStacksActivity extends ActionBarDrawerStacksAc
 
         super.moveUp();
 
-        clearDetailFragment();
+        if (hasDetailFragment()) clearDetailFragment();
     }
 
     private void clearDetailFragment() {
